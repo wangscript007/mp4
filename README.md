@@ -76,3 +76,12 @@ MP4	|mp41, mp42|	.mp4	|video/mp4, audio/mp4, application/mp4
 3GPP2	|3g2a	|.3g2	|video/3gpp2, audio/3gpp2
 Motion JPEG 2000|	mjp2	|.mj2	|video/mj2
 QuickTime	|"qt"|	.mov	|video/quicktime
+
+![./images/ftyp.jpg]
+field|length|value|说明
+---|---|---|---
+length|4字节| 0x0000001c|box的长度是28字节；
+boxtype|4字节| 0x66747970 |“ftyp”的ASCII码，box的标识；
+major_brand|4字节|0x69736f6d|“isom“的ASCII码；
+minor_version|4字节|0x00000200|ismo的版本号；
+compatible_brands|12字节||说明本文件遵从（或称兼容）ismo,iso2,mp41三种协议。
