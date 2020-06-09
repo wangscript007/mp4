@@ -32,6 +32,9 @@ sample descriptions。track 里面的每个 sample 通过引用关联到一个 s
 ![pic](./images/mp4-struct.png)
 
 # box
+　　MP4文件中的所有数据都装在box（QuickTime中为atom）中，也就是说MP4文件由若干个box组成，每个box有类型和长度，可以将box理解为一个数据对象块。box中可以包含另一个box，这种box称为container box。一个MP4文件首先会有且只有一个“ftyp”类型的box，作为MP4格式的标志并包含关于文件的一些信息；之后会有且只有一个“moov”类型的box（Movie Box），它是一种container box，子box包含了媒体的metadata信息；MP4文件的媒体数据包含在“mdat”类型的box（Midia Data Box）中，该类型的box也是container box，可以有多个，也可以没有（当媒体数据全部引用其他文件时），媒体数据的结构由metadata进行描述。
+　　标准的box开头的4个字节（32位）为box size，该大小包括box header和box body整个box的大小，这样我们就可以在文件中定位各个box。如果size为1，则表示这个box的大小为large size，真正的size值要在largesize域上得到。（实际上只有“mdat”类型的box才有可能用到large size。）如果size为0，表示该box为文件的最后一个box，文件结尾即为该box结尾。（同样只存在于“mdat”类型的box中。）
+
 ![pic](./images/box.png)
 - box由header和body组成，其中header指明box的size和type。size是包含box header的整个box的大小。
 - box type，通常是4个ASCII码的字符如“ftyp”、“moov”等，这些box type都是已经预定义好的，表示固定的含义。如果是“uuid”，表示该box为用户自定义扩展类型，如果box type是未定义的，应该将其忽略。
@@ -85,3 +88,38 @@ boxtype|4字节| 0x66747970 |“ftyp”的ASCII码，box的标识；
 major_brand|4字节|0x69736f6d|“isom“的ASCII码；
 minor_version|4字节|0x00000200|ismo的版本号；
 compatible_brands|12字节||说明本文件遵从（或称兼容）ismo,iso2,mp41三种协议。
+
+ftyp box通常放在文件的开始，通过对该box解析可以让我们的软件（播放器、demux、解析器）知道应该使用哪种协议对这该文件解析，是后续解读文件基础。
+
+## moov
+　　该box包含了文件媒体的metadata信息, “moov”是一个container box, 具有内容信息由子box诠释. 同FILE Type Box一样, 该box有且只有一个, 且只被包含在文件层. 一般情况下, “moov”会紧跟”ftyp”出现.
+　　一般情况下(限于mp4文件结构), “moov”中会包含1个”mvhd”和若干个”trak”. 其中”mvhd”为header box, 一般作为”moov”的第一子box出现(对于其他container box 来说, header box 都应作为首个子box出现). “trak” 包含了一个track的相关的信息, 是一个container box. 
+  
+### mvhd
+```
+aligned(8) class MovieHeaderBox extends FullBox(‘mvhd’, version, 0) 
+{ 
+    if (version==1) 
+    { 
+        unsigned int(64) creation_time; 
+        unsigned int(64) modification_time; 
+        unsigned int(32) timescale; 
+        unsigned int(64) duration; 
+    } 
+    else 
+    { // version==0 
+        unsigned int(32) creation_time; 
+        unsigned int(32) modification_time; 
+        unsigned int(32) timescale; 
+        unsigned int(32) duration; 
+    } 
+    template int(32)  rate = 0x00010000; // typically 1.0 
+    template int(16)  volume = 0x0100;  // typically, full volume 
+    const bit(16)  reserved = 0; 
+    const unsigned int(32)[2]  reserved = 0; 
+    template int(32)[9]  matrix = { 0x00010000,0,0,0,0x00010000,0,0,0,0x40000000 }; 
+    // Unity matrix 
+    bit(32)[6]  pre_defined = 0; 
+    unsigned int(32) next_track_ID; 
+} 
+```
