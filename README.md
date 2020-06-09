@@ -1,3 +1,6 @@
+# 文件结构
+![pic](./images/mp4-struct.png)
+
 # box
 ![pic](./images/box.png)
 - box由header和body组成，其中header指明box的size和type。size是包含box header的整个box的大小。
