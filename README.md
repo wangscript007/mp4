@@ -68,10 +68,9 @@ aligned(8) class FileTypeBox extends Box(‘ftyp’)
 ### brands
 > Each brand is a printable four-character code, registered with ISO, that identifies a precise specification. //在ISO注册的4个字符。
 
-   | Brand	|Extension|Mime Type 
+
+ |  | Brand| Extension| Mime Type 
 ---|---|---|---
-
-
 MP4	|mp41, mp42|	.mp4	|video/mp4, audio/mp4, application/mp4
 3GPP	|various, e.g. 3gp4, 3gp5|	.3gp	|video/3gpp, audio/3gpp
 3GPP2	|3g2a	|.3g2	|video/3gpp2, audio/3gpp2
