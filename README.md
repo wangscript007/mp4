@@ -77,7 +77,7 @@ MP4	|mp41, mp42|	.mp4	|video/mp4, audio/mp4, application/mp4
 Motion JPEG 2000|	mjp2	|.mj2	|video/mj2
 QuickTime	|"qt"|	.mov	|video/quicktime
 
-![./images/ftyp.jpg]
+![pic](./images/ftyp.jpg)
 field|length|value|说明
 ---|---|---|---
 length|4字节| 0x0000001c|box的长度是28字节；
