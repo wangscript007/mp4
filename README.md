@@ -23,4 +23,6 @@ aligned(8) class Box (unsigned int(32) boxtype,
     }
 }
 ```
+## box详解
+![pic](./images/box-detail.png)
 
