@@ -92,7 +92,7 @@ compatible_brands|12字节||说明本文件遵从（或称兼容）ismo,iso2,mp4
 ftyp box通常放在文件的开始，通过对该box解析可以让我们的软件（播放器、demux、解析器）知道应该使用哪种协议对这该文件解析，是后续解读文件基础。
 
 ## moov
-　　该box包含了文件媒体的metadata信息, “moov”是一个container box, 具有内容信息由子box诠释. 同FILE Type Box一样, 该box有且只有一个, 且只被包含在文件层. 一般情况下, “moov”会紧跟”ftyp”出现.　　
+　　该box包含了文件媒体的metadata信息, “moov”是一个container box, 具有内容信息由子box诠释. 同FILE Type Box一样, 该box有且只有一个, 且只被包含在文件层. 一般情况下, “moov”会紧跟”ftyp”出现.   
 　　一般情况下(限于mp4文件结构), “moov”中会包含1个”mvhd”和若干个”trak”. 其中”mvhd”为header box, 一般作为”moov”的第一子box出现(对于其他container box 来说, header box 都应作为首个子box出现). “trak” 包含了一个track的相关的信息, 是一个container box. 
   
 ### mvhd
